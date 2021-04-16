@@ -5,13 +5,10 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import airlift.main.AirliftLogger;
-
 public class DepartureAirport implements DepartureAirportHostess, DepartureAirportPassenger {
 
-    private AirliftLogger logger;
-    private Queue<Integer> passengers = new LinkedList<>();
     private ReentrantLock lock = new ReentrantLock(true);
+    private Queue<Integer> passengers = new LinkedList<>();
     private Condition passengerWaitInQueue = lock.newCondition();
     private Condition passengerWaitForHostessCheckDocuments = lock.newCondition();
     private Condition hostessWaitForNextPassenger = lock.newCondition();
@@ -21,10 +18,7 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
     private boolean passengerChecked = false;
     private int passengerInCheck = -1;
     private int lastPassengerInCheck = -1;
-
-    public DepartureAirport(AirliftLogger airliftLogger) {
-        this.logger = airliftLogger;
-    }
+    private int numberPassengersChecked = 0;
 
     @Override
     public int numberPassengersInQueue() {
@@ -37,12 +31,26 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
     }
 
     @Override
+    public int numberPassengersChecked() {
+        this.lock.lock();
+        try {
+            int numberPassengersChecked = this.numberPassengersChecked;
+            if (this.passengerInCheck != -1) {
+                numberPassengersChecked += 1;
+            }
+            return numberPassengersChecked;
+        } finally {
+            this.lock.unlock();
+        }
+    }
+
+    @Override
     public void waitInQueue(int passengerId) {
         this.lock.lock();
         try {
             this.passengers.add(passengerId);
-            this.logger.writeLog();
             this.hostessWaitForNextPassenger.signal();
+
             while (!this.hostessCheckDocuments
                     || (this.hostessCheckDocuments && passengerId != this.passengerInCheck)) {
                 this.passengerWaitInQueue.await();
@@ -67,24 +75,13 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
             }
             this.passengerChecked = false;
             this.lastPassengerInCheck = -1;
+            this.numberPassengersChecked += 1;
+            this.hostessWaitForNextPassenger.signal();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             this.lock.unlock();
         }
-    }
-
-    @Override
-    public int inCheck() {
-        this.lock.lock();
-        try {
-            if (this.passengerInCheck != 0) {
-                return 1;
-            }
-        } finally {
-            this.lock.unlock();
-        }
-        return 0;
     }
 
     @Override
@@ -101,8 +98,6 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
     public void waitForNextPassenger(boolean wait) {
         this.lock.lock();
         try {
-            this.logger.writeLog();
-
             if (this.passengerInCheck != -1) {
                 this.lastPassengerInCheck = this.passengerInCheck;
                 this.passengerInCheck = -1;
@@ -115,8 +110,12 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
                 while (this.passengers.isEmpty()) {
                     this.hostessWaitForNextPassenger.await();
                 }
-                this.hostessCheckDocuments = true;
                 this.passengerInCheck = this.passengers.poll();
+            } else {
+                while (this.lastPassengerInCheck != -1) {
+                    this.hostessWaitForNextPassenger.await();
+                }
+                this.numberPassengersChecked = 0;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -129,8 +128,7 @@ public class DepartureAirport implements DepartureAirportHostess, DepartureAirpo
     public void checkDocuments() {
         this.lock.lock();
         try {
-            this.logger.writeLog(5);
-
+            this.hostessCheckDocuments = true;
             this.passengerWaitInQueue.signal();
             this.passengerWaitInQueue.signalAll();
 

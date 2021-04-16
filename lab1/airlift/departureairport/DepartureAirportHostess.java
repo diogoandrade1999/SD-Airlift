@@ -8,8 +8,8 @@ public interface DepartureAirportHostess {
 
     void checkDocuments();
 
-    int inCheck();
-
     int getPassengerInCheck();
+
+    int numberPassengersChecked();
 
 }

@@ -7,8 +7,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class DestinationAirport
         implements DestinationAirportPilot, DestinationAirportHostess, DestinationAirportPassenger {
 
-    private Queue<Integer> passengers = new LinkedList<>();
     private ReentrantLock lock = new ReentrantLock(true);
+    private Queue<Integer> passengers = new LinkedList<>();
 
     @Override
     public void atDestination(int passengerId) {

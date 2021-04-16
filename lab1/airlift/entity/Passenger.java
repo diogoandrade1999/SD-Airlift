@@ -5,33 +5,24 @@ import java.util.Random;
 import airlift.departureairport.DepartureAirportPassenger;
 import airlift.destinationairport.DestinationAirportPassenger;
 import airlift.plane.PlanePassenger;
+import airlift.repository.RepositoryPassenger;
 
 public class Passenger implements Runnable {
 
-    private PassengerState state = PassengerState.GOING_TO_AIRPORT;
+    private PassengerState state;
     private DepartureAirportPassenger departureAirport;
     private DestinationAirportPassenger destinationAirport;
     private PlanePassenger plane;
+    private RepositoryPassenger repository;
     private int id;
 
     public Passenger(DepartureAirportPassenger departureAirport, DestinationAirportPassenger destinationAirport,
-            PlanePassenger plane, int id) {
+            PlanePassenger plane, RepositoryPassenger repository, int id) {
         this.departureAirport = departureAirport;
         this.destinationAirport = destinationAirport;
         this.plane = plane;
+        this.repository = repository;
         this.id = id;
-    }
-
-    public String getId() {
-        String id = String.valueOf(this.id);
-        if (this.id < 10) {
-            id = 0 + id;
-        }
-        return id;
-    }
-
-    public PassengerState getState() {
-        return this.state;
     }
 
     @Override
@@ -42,6 +33,7 @@ public class Passenger implements Runnable {
 
         // waitInQueue
         this.state = PassengerState.IN_QUEUE;
+        this.repository.updatePassengerState(this.state, this.id);
         this.departureAirport.waitInQueue(this.id);
 
         // showDocuments
@@ -49,6 +41,7 @@ public class Passenger implements Runnable {
 
         // boardThePlane
         this.state = PassengerState.IN_FLIGHT;
+        this.repository.updatePassengerState(this.state, this.id);
         this.plane.boardThePlane(this.id);
 
         // waitForEndOfFlight
@@ -56,6 +49,7 @@ public class Passenger implements Runnable {
 
         // atDestination
         this.state = PassengerState.AT_DESTINATION;
+        this.repository.updatePassengerState(this.state, this.id);
         this.destinationAirport.atDestination(this.id);
 
         // leaveThePlane
