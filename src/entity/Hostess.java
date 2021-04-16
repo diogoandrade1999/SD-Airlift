@@ -1,9 +1,9 @@
-package airlift.entity;
+package entity;
 
-import airlift.departureairport.DepartureAirportHostess;
-import airlift.destinationairport.DestinationAirportHostess;
-import airlift.plane.PlaneHostess;
-import airlift.repository.RepositoryHostess;
+import departureairport.DepartureAirportHostess;
+import destinationairport.DestinationAirportHostess;
+import plane.PlaneHostess;
+import repository.RepositoryHostess;
 
 public class Hostess implements Runnable {
 

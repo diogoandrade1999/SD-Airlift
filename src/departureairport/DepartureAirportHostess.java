@@ -1,4 +1,4 @@
-package airlift.departureairport;
+package departureairport;
 
 public interface DepartureAirportHostess {
 

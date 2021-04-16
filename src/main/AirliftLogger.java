@@ -1,4 +1,4 @@
-package airlift.main;
+package main;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import airlift.entity.HostessState;
-import airlift.entity.PassengerState;
-import airlift.entity.PilotState;
+import entity.HostessState;
+import entity.PassengerState;
+import entity.PilotState;
 
 public class AirliftLogger {
 

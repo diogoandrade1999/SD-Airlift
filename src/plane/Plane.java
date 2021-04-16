@@ -1,4 +1,4 @@
-package airlift.plane;
+package plane;
 
 import java.util.LinkedList;
 import java.util.Queue;

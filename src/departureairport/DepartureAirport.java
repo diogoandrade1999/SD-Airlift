@@ -1,4 +1,4 @@
-package airlift.departureairport;
+package departureairport;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,4 +1,4 @@
-package airlift.entity;
+package entity;
 
 public enum PassengerState {
 

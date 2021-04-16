@@ -1,4 +1,4 @@
-package airlift.plane;
+package plane;
 
 public interface PlaneHostess {
 

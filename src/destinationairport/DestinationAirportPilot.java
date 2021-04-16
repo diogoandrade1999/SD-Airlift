@@ -1,4 +1,4 @@
-package airlift.destinationairport;
+package destinationairport;
 
 public interface DestinationAirportPilot {
 

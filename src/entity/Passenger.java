@@ -1,11 +1,11 @@
-package airlift.entity;
+package entity;
 
 import java.util.Random;
 
-import airlift.departureairport.DepartureAirportPassenger;
-import airlift.destinationairport.DestinationAirportPassenger;
-import airlift.plane.PlanePassenger;
-import airlift.repository.RepositoryPassenger;
+import departureairport.DepartureAirportPassenger;
+import destinationairport.DestinationAirportPassenger;
+import plane.PlanePassenger;
+import repository.RepositoryPassenger;
 
 public class Passenger implements Runnable {
 

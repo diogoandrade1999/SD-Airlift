@@ -1,6 +1,6 @@
-package airlift.repository;
+package repository;
 
-import airlift.entity.PassengerState;
+import entity.PassengerState;
 
 public interface RepositoryPassenger {
 

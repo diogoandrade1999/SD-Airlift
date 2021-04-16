@@ -1,12 +1,12 @@
-package airlift.main;
+package main;
 
-import airlift.departureairport.DepartureAirport;
-import airlift.destinationairport.DestinationAirport;
-import airlift.plane.Plane;
-import airlift.repository.Repository;
-import airlift.entity.Hostess;
-import airlift.entity.Passenger;
-import airlift.entity.Pilot;
+import departureairport.DepartureAirport;
+import destinationairport.DestinationAirport;
+import plane.Plane;
+import repository.Repository;
+import entity.Hostess;
+import entity.Passenger;
+import entity.Pilot;
 
 public class Airlift {
 

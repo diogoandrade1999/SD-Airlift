@@ -1,13 +1,13 @@
-package airlift.repository;
+package repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-import airlift.entity.HostessState;
-import airlift.entity.PassengerState;
-import airlift.entity.PilotState;
-import airlift.main.AirliftLogger;
+import entity.HostessState;
+import entity.PassengerState;
+import entity.PilotState;
+import main.AirliftLogger;
 
 public class Repository implements RepositoryHostess, RepositoryPilot, RepositoryPassenger {
 

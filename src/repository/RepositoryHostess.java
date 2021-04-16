@@ -1,6 +1,6 @@
-package airlift.repository;
+package repository;
 
-import airlift.entity.HostessState;
+import entity.HostessState;
 
 public interface RepositoryHostess {
 

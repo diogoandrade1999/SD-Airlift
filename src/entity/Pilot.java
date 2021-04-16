@@ -1,10 +1,10 @@
-package airlift.entity;
+package entity;
 
 import java.util.Random;
 
-import airlift.destinationairport.DestinationAirportPilot;
-import airlift.plane.PlanePilot;
-import airlift.repository.RepositoryPilot;
+import destinationairport.DestinationAirportPilot;
+import plane.PlanePilot;
+import repository.RepositoryPilot;
 
 public class Pilot implements Runnable {
 
