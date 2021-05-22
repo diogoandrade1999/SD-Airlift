@@ -44,7 +44,7 @@ public class AirliftLogger {
         String out = "";
         for (int i = 0; i < totalPassengers; i++) {
             String passengerId = String.valueOf(i);
-            if (i < 9) {
+            if (i <= 9) {
                 passengerId = "0" + i;
             }
             out += "  P" + passengerId;

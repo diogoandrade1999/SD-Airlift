@@ -5,9 +5,15 @@ import communication.Message;
 
 public class DepartureAirportPassengerStub implements DepartureAirportPassenger {
 
-    private final static int PORT = 2001;
+    private String host;
+    private int port;
     private CommunicationChannel channel;
     private Message message;
+
+    public DepartureAirportPassengerStub(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
     @Override
     public void waitInQueue(int passengerId) {
@@ -15,7 +21,7 @@ public class DepartureAirportPassengerStub implements DepartureAirportPassenger 
         this.message.setMethod("waitInQueue");
         this.message.setId(passengerId);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -28,7 +34,7 @@ public class DepartureAirportPassengerStub implements DepartureAirportPassenger 
         this.message.setMethod("showDocuments");
         this.message.setId(passengerId);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();

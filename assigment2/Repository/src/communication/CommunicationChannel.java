@@ -9,14 +9,21 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CommunicationChannel {
+public class CommunicationChannel implements Cloneable {
 
     private ServerSocket server;
     private Socket client;
-    private final int port;
-    private final String host = "localhost";
+    private String host;
+    private int port;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
-    public CommunicationChannel(int port) {
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public CommunicationChannel(String host, int port) {
+        this.host = host;
         this.port = port;
     }
 
@@ -27,6 +34,7 @@ public class CommunicationChannel {
     public void start() {
         try {
             this.server = new ServerSocket(this.port);
+            this.server.setSoTimeout(120000);
         } catch (IOException e) {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -39,7 +47,14 @@ public class CommunicationChannel {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
             return null;
         }
-        return this;
+        CommunicationChannel channel;
+        try {
+            channel = (CommunicationChannel) this.clone();
+        } catch (CloneNotSupportedException e) {
+            Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+        return channel;
     }
 
     public void end() {
@@ -62,10 +77,9 @@ public class CommunicationChannel {
 
     public Message readObject() {
         Message message = null;
-        ObjectInputStream in;
         try {
-            in = new ObjectInputStream(this.client.getInputStream());
-            message = (Message) in.readObject();
+            this.in = new ObjectInputStream(this.client.getInputStream());
+            message = (Message) this.in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -73,10 +87,10 @@ public class CommunicationChannel {
     }
 
     public void writeObject(Message message) {
-        ObjectOutputStream out;
         try {
-            out = new ObjectOutputStream(this.client.getOutputStream());
-            out.writeObject(message);
+            this.out = new ObjectOutputStream(this.client.getOutputStream());
+            this.out.writeObject(message);
+            this.out.flush();
         } catch (IOException e) {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -84,6 +98,8 @@ public class CommunicationChannel {
 
     public void close() {
         try {
+            this.in.close();
+            this.out.close();
             this.client.close();
         } catch (IOException e) {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);

@@ -8,9 +8,15 @@ import entity.PilotState;
 
 public class RepositoryStub implements RepositoryInt {
 
-    private final static int PORT = 2004;
+    private String host;
+    private int port;
     private CommunicationChannel channel;
     private Message message;
+
+    public RepositoryStub(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
     @Override
     public void updateHostessState(HostessState hostessState) {
@@ -18,7 +24,7 @@ public class RepositoryStub implements RepositoryInt {
         this.message.setMethod("updateHostessState");
         this.message.setHostessState(hostessState);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -31,7 +37,7 @@ public class RepositoryStub implements RepositoryInt {
         this.message.setMethod("updatePilotState");
         this.message.setPilotState(pilotState);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -45,7 +51,7 @@ public class RepositoryStub implements RepositoryInt {
         this.message.setPassengerState(passengerState);
         this.message.setId(passengerId);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -58,7 +64,7 @@ public class RepositoryStub implements RepositoryInt {
         this.message.setMethod("updatePassengerInCheck");
         this.message.setId(passengerInCheck);
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();

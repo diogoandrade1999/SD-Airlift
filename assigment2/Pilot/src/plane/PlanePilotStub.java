@@ -5,16 +5,22 @@ import communication.Message;
 
 public class PlanePilotStub implements PlanePilot {
 
-    private final static int PORT = 2003;
+    private String host;
+    private int port;
     private CommunicationChannel channel;
     private Message message;
+
+    public PlanePilotStub(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
     @Override
     public void informPlaneReadyForBoarding() {
         this.message = new Message();
         this.message.setMethod("informPlaneReadyForBoarding");
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -26,7 +32,7 @@ public class PlanePilotStub implements PlanePilot {
         this.message = new Message();
         this.message.setMethod("waitForAllInBoard");
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
@@ -38,7 +44,7 @@ public class PlanePilotStub implements PlanePilot {
         this.message = new Message();
         this.message.setMethod("announceArrival");
 
-        this.channel = new CommunicationChannel(PORT);
+        this.channel = new CommunicationChannel(this.host, this.port);
         this.channel.open();
         this.channel.writeObject(this.message);
         this.channel.readObject();
