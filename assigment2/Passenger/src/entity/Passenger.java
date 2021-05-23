@@ -43,7 +43,7 @@ public class Passenger implements Runnable {
     public void run() {
         // travelToAirport
         try {
-            Thread.sleep((new Random().nextInt(30) + 10) * 1000);
+            Thread.sleep((new Random().nextInt(9) + 1) * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

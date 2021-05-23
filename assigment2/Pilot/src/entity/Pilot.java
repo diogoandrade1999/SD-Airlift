@@ -43,7 +43,7 @@ public class Pilot implements Runnable {
             this.plane.waitForAllInBoard();
 
             // flyToDestinationPoint
-            int flyingTime = (new Random().nextInt(10) + 1) * 1000;
+            int flyingTime = (new Random().nextInt(2) + 1) * 1000;
             try {
                 Thread.sleep(flyingTime);
             } catch (InterruptedException e) {

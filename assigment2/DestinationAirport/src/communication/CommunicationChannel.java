@@ -54,7 +54,7 @@ public class CommunicationChannel implements Cloneable {
     public void start() {
         try {
             this.server = new ServerSocket(this.port);
-            this.server.setSoTimeout(120000);
+            this.server.setSoTimeout(15000);
         } catch (IOException e) {
             Logger.getLogger(CommunicationChannel.class.getName()).log(Level.SEVERE, null, e);
         }

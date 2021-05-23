@@ -43,25 +43,25 @@ proccess_command_line() {
 
 send_code() {
     printf "\nSend DepartureAirport!\n"
-    echo "put -r ../DepartureAirport" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[0]}${host}
+    echo "put -r ./DepartureAirport" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[0]}${host}
 
     printf "\nSend DestinationAirport!\n"
-    echo "put -r ../DestinationAirport" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[1]}${host}
+    echo "put -r ./DestinationAirport" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[1]}${host}
 
     printf "\nSend Plane!\n"
-    echo "put -r ../Plane" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[2]}${host}
+    echo "put -r ./Plane" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[2]}${host}
 
     printf "\nSend Repository!\n"
-    echo "put -r ../Repository" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[3]}${host}
+    echo "put -r ./Repository" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[3]}${host}
 
     printf "\nSend Pilot!\n"
-    echo "put -r ../Pilot" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[4]}${host}
+    echo "put -r ./Pilot" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[4]}${host}
 
     printf "\nSend Hostess!\n"
-    echo "put -r ../Hostess" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[5]}${host}
+    echo "put -r ./Hostess" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[5]}${host}
 
     printf "\nSend Passengers!\n"
-    echo "put -r ../Passenger" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[6]}${host}
+    echo "put -r ./Passenger" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[6]}${host}
 }
 
 start() {
@@ -91,8 +91,14 @@ start() {
 }
 
 get_result() {
+    printf "\nWait for the end of execution!\n"
+    sleep 35
+
     printf "\nGet Logging File!\n"
     sshpass -p $pass ssh ${user}"@"${machine}${machine_number[3]}${host} " cat ./Repository/logging.log "
+
+    printf "\nWait for the servers stop!\n"
+    sleep 15
 }
 
 number_args=$#
@@ -101,5 +107,4 @@ args=$@
 proccess_command_line
 send_code
 start
-sleep 60
 get_result
