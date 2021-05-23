@@ -11,12 +11,29 @@ import entity.HostessState;
 import entity.PassengerState;
 import entity.PilotState;
 
+/**
+ * Airlift Logger
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class AirliftLogger {
 
     private final static Logger logger = Logger.getLogger(AirliftLogger.class.getName());
 
+    /**
+     * My Custom Logger Formatter
+     *
+     * @author Diogo Andrade 89265
+     * @author Rodrigo Oliveira 90514
+     * @see Formatter
+     */
     private static class MyCustomFormatter extends Formatter {
-
+        /**
+         * This method is used to format the logger text.
+         *
+         * @return This returns the logger text.
+         */
         @Override
         public String format(LogRecord record) {
             StringBuffer sb = new StringBuffer();
@@ -26,6 +43,9 @@ public class AirliftLogger {
         }
     }
 
+    /**
+     * Creates an Airlift Logger.
+     */
     public AirliftLogger() {
         try {
             MyCustomFormatter formatter = new MyCustomFormatter();
@@ -40,6 +60,11 @@ public class AirliftLogger {
         }
     }
 
+    /**
+     * This method is used write the initial log.
+     *
+     * @param totalPassengers The total Passengers;
+     */
     public void initialLog(int totalPassengers) {
         String out = "";
         for (int i = 0; i < totalPassengers; i++) {
@@ -53,10 +78,26 @@ public class AirliftLogger {
         logger.info(" PT   HT " + out + " InQ InF PTAL");
     }
 
+    /**
+     * This method is used to write the message log.
+     *
+     * @param numberFlights The number of flight;
+     * @param msg           The number message;
+     */
     public void messageLog(int numberFlights, String msg) {
         logger.info("\nFlight " + numberFlights + ": " + msg);
     }
 
+    /**
+     * This method is used to write the state log.
+     *
+     * @param pilotState                    The Pilot State;
+     * @param hostessState                  The Hostess State;
+     * @param passengersStates              The passengers States;
+     * @param numberPassengersInQueue       The number of Passengers In Queue;
+     * @param numberPassengersInPlane       The number of Passengers In Plane;
+     * @param numberPassengersInDestination The number of Passengers In Destination;
+     */
     public void stateLog(PilotState pilotState, HostessState hostessState, PassengerState[] passengersStates,
             int numberPassengersInQueue, int numberPassengersInPlane, int numberPassengersInDestination) {
         String out = pilotState.getDescription();
@@ -70,6 +111,11 @@ public class AirliftLogger {
         logger.info(out);
     }
 
+    /**
+     * This method is used to write the resume log.
+     *
+     * @param flightsResume The resume of fligths.
+     */
     public void resumeLog(List<Integer> flightsResume) {
         String out = "\nAirlift sum up:";
         for (int i = 0; i < flightsResume.size(); i++) {

@@ -10,6 +10,12 @@ import entity.PassengerState;
 import entity.PilotState;
 import repository.RepositoryInt;
 
+/**
+ * Plane
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
 
     private RepositoryInt repository;
@@ -27,11 +33,20 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
     private int passengersStillMissing;
     private int lastPassengerToBoard = -1;
 
+    /**
+     * Creates an Plane.
+     * 
+     * @param repository      The repository.
+     * @param totalPassengers The total passengers.
+     */
     public Plane(RepositoryInt repository, int totalPassengers) {
         this.repository = repository;
         this.passengersStillMissing = totalPassengers;
     }
 
+    /**
+     * This method is used to hostess wait for next flight.
+     */
     @Override
     public boolean waitForNextFlight() {
         this.lock.lock();
@@ -58,6 +73,11 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         return false;
     }
 
+    /**
+     * This method is used to inform plane ready to take off.
+     * 
+     * @param passengerId The id of last passenger.
+     */
     @Override
     public void informPlaneReadyToTakeOff(int passengerId) {
         this.lock.lock();
@@ -80,6 +100,9 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to inform that the plane is ready for boarding.
+     */
     @Override
     public void informPlaneReadyForBoarding() {
         this.lock.lock();
@@ -95,6 +118,9 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to pilot wait for all in board.
+     */
     @Override
     public void waitForAllInBoard() {
         this.lock.lock();
@@ -117,6 +143,9 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to announce arrival.
+     */
     @Override
     public void announceArrival() {
         this.lock.lock();
@@ -146,6 +175,11 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to passenger board the plane.
+     * 
+     * @param passengerId The passenger id.
+     */
     @Override
     public void boardThePlane(int passengerId) {
         this.lock.lock();
@@ -165,6 +199,11 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to passenger wait for end of flight.
+     * 
+     * @param passengerId The passenger id.
+     */
     @Override
     public void waitForEndOfFlight(int passengerId) {
         this.lock.lock();
@@ -180,6 +219,11 @@ public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
         }
     }
 
+    /**
+     * This method is used to passenger leave the plane.
+     * 
+     * @param passengerId The passenger id.
+     */
     @Override
     public void leaveThePlane(int passengerId) {
         this.lock.lock();

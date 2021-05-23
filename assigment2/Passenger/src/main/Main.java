@@ -5,6 +5,12 @@ import destinationairport.DestinationAirportPassengerStub;
 import entity.Passenger;
 import plane.PlanePassengerStub;
 
+/**
+ * Main Passengers
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class Main {
 
     private static final int TOTAL_PASSENGERS = 21;
@@ -15,6 +21,16 @@ public class Main {
     private int destinationAirportPort;
     private int planePort;
 
+    /**
+     * Creates an Main Passengers. And starts the simulation.
+     * 
+     * @param departureAirportHost   The Departure Airport Host.
+     * @param destinationAirportHost The Destination Airport Host.
+     * @param planeHost              The Plane Host.
+     * @param departureAirportPort   The Departure Airport Port.
+     * @param destinationAirportPort The Destination Airport Port.
+     * @param planePort              The Plane Port.
+     */
     private Main(String departureAirportHost, String destinationAirportHost, String planeHost, int departureAirportPort,
             int destinationAirportPort, int planePort) {
         this.departureAirportHost = departureAirportHost;
@@ -26,6 +42,10 @@ public class Main {
         this.initSimulation();
     }
 
+    /**
+     * Starts the simulation. Create the Services and Entitie. Starts the threads
+     * Passengers.
+     */
     private void initSimulation() {
         // Services
         DepartureAirportPassengerStub departureAirport;
@@ -49,6 +69,11 @@ public class Main {
         }
     }
 
+    /**
+     * Validates de command line arguments and create the Main Passengers.
+     * 
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         String departureAirportHost;
         String planeHost;

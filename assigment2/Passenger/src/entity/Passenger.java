@@ -6,6 +6,13 @@ import departureairport.DepartureAirportPassenger;
 import destinationairport.DestinationAirportPassenger;
 import plane.PlanePassenger;
 
+/**
+ * Passenger
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ * @see Runnable
+ */
 public class Passenger implements Runnable {
 
     private DepartureAirportPassenger departureAirport;
@@ -13,6 +20,14 @@ public class Passenger implements Runnable {
     private PlanePassenger plane;
     private int id;
 
+    /**
+     * Creates an Passenger.
+     * 
+     * @param departureAirport   The departure airport.
+     * @param destinationAirport The destination airport.
+     * @param plane              The alane.
+     * @param id                 The passenger id.
+     */
     public Passenger(DepartureAirportPassenger departureAirport, DestinationAirportPassenger destinationAirport,
             PlanePassenger plane, int id) {
         this.departureAirport = departureAirport;
@@ -21,6 +36,9 @@ public class Passenger implements Runnable {
         this.id = id;
     }
 
+    /**
+     * This method is used when the thread starts.
+     */
     @Override
     public void run() {
         // travelToAirport

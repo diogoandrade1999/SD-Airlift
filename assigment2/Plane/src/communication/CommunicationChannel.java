@@ -9,6 +9,13 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Communication Channel
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ * @see Cloneable
+ */
 public class CommunicationChannel implements Cloneable {
 
     private ServerSocket server;
@@ -18,19 +25,32 @@ public class CommunicationChannel implements Cloneable {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
+    /**
+     * This method is used to clone the Communication Channel.
+     *
+     * @return This returns the clone of the Communication Channel.
+     * @exception CloneNotSupportedException
+     */
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
+    /**
+     * Creates an Communication Channel.
+     * 
+     * @param host The server host.
+     * @param port The server port.
+     */
     public CommunicationChannel(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    public Socket getClient() {
-        return this.client;
-    }
-
+    /**
+     * This method is used to start the server.
+     * 
+     * @exception IOException
+     */
     public void start() {
         try {
             this.server = new ServerSocket(this.port);
@@ -40,6 +60,13 @@ public class CommunicationChannel implements Cloneable {
         }
     }
 
+    /**
+     * This method is used to accept the communication to the server from client.
+     * 
+     * @return The clone of the Communication Channel.
+     * @exception IOException
+     * @exception CloneNotSupportedException
+     */
     public CommunicationChannel accept() {
         try {
             this.client = this.server.accept();
@@ -57,6 +84,11 @@ public class CommunicationChannel implements Cloneable {
         return channel;
     }
 
+    /**
+     * This method is used to close the server.
+     * 
+     * @exception IOException
+     */
     public void end() {
         try {
             this.server.close();
@@ -65,6 +97,12 @@ public class CommunicationChannel implements Cloneable {
         }
     }
 
+    /**
+     * This method is used to open the communication from client to the server.
+     * 
+     * @exception UnknownHostException
+     * @exception IOException
+     */
     public void open() {
         try {
             this.client = new Socket(this.host, this.port);
@@ -75,6 +113,13 @@ public class CommunicationChannel implements Cloneable {
         }
     }
 
+    /**
+     * This method is used to receive and read the input message.
+     * 
+     * @return The input message.
+     * @exception IOException
+     * @exception ClassNotFoundException
+     */
     public Message readObject() {
         Message message = null;
         try {
@@ -86,6 +131,12 @@ public class CommunicationChannel implements Cloneable {
         return message;
     }
 
+    /**
+     * This method is used to send the output message.
+     * 
+     * @param message The output message.
+     * @exception IOException
+     */
     public void writeObject(Message message) {
         try {
             this.out = new ObjectOutputStream(this.client.getOutputStream());
@@ -96,6 +147,11 @@ public class CommunicationChannel implements Cloneable {
         }
     }
 
+    /**
+     * This method is used to close the communication from client to the server.
+     * 
+     * @exception IOException
+     */
     public void close() {
         try {
             this.in.close();

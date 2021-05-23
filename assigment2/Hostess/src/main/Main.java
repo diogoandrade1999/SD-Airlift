@@ -4,6 +4,12 @@ import departureairport.DepartureAirportHostessStub;
 import entity.Hostess;
 import plane.PlaneHostessStub;
 
+/**
+ * Main Hostess
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class Main {
 
     private String departureAirportHost;
@@ -11,6 +17,14 @@ public class Main {
     private int departureAirportPort;
     private int planePort;
 
+    /**
+     * Creates an Main Hostess. And starts the simulation.
+     * 
+     * @param departureAirportHost The Departure Airport Host.
+     * @param planeHost            The Plane Host.
+     * @param departureAirportPort The Departure Airport Port.
+     * @param planePort            The Plane Port.
+     */
     private Main(String departureAirportHost, String planeHost, int departureAirportPort, int planePort) {
         this.departureAirportHost = departureAirportHost;
         this.planeHost = planeHost;
@@ -19,6 +33,10 @@ public class Main {
         this.initSimulation();
     }
 
+    /**
+     * Starts the simulation. Create the Services and Entitie. Starts the threads
+     * Hostess.
+     */
     private void initSimulation() {
         // Services
         DepartureAirportHostessStub departureAirport = new DepartureAirportHostessStub(this.departureAirportHost,
@@ -30,6 +48,11 @@ public class Main {
         new Thread(hostess, "hostess").start();
     }
 
+    /**
+     * Validates de command line arguments and create the Main Hostess.
+     * 
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         String departureAirportHost;
         String planeHost;

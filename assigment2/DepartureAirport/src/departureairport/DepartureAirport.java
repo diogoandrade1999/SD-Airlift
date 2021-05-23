@@ -10,6 +10,12 @@ import entity.HostessState;
 import entity.PassengerState;
 import repository.RepositoryInt;
 
+/**
+ * Departure Airport
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class DepartureAirport implements DepartureAirportPilot, DepartureAirportHostess, DepartureAirportPassenger {
 
     private RepositoryInt repository;
@@ -29,6 +35,14 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
     private final int numberMaxPassengers;
     private final int numberMinPassengers;
 
+    /**
+     * Creates an Departure Airport.
+     * 
+     * @param repository          The repository.
+     * @param totalPassengers     The total passengers.
+     * @param numberMaxPassengers The number maximum of passengers.
+     * @param numberMinPassengers The number minimum of passengers.
+     */
     public DepartureAirport(RepositoryInt repository, int totalPassengers, int numberMaxPassengers,
             int numberMinPassengers) {
         this.repository = repository;
@@ -37,6 +51,11 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
         this.numberMinPassengers = numberMinPassengers;
     }
 
+    /**
+     * This method is used to passenger wait in queue.
+     * 
+     * @param passengerId The passenger id.
+     */
     @Override
     public void waitInQueue(int passengerId) {
         this.lock.lock();
@@ -63,6 +82,11 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
         }
     }
 
+    /**
+     * This method is used to passenger show the documents.
+     * 
+     * @param passengerId The passenger id.
+     */
     @Override
     public void showDocuments(int passengerId) {
         this.lock.lock();
@@ -84,6 +108,11 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
         }
     }
 
+    /**
+     * This method is used to hostess wait for next passenger.
+     * 
+     * @return true if need to wait otherwise false
+     */
     @Override
     public boolean waitForNextPassenger() {
         this.lock.lock();
@@ -127,6 +156,11 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
         return false;
     }
 
+    /**
+     * This method is used to hostess check documents.
+     * 
+     * @return The passenger id;
+     */
     @Override
     public int checkDocuments() {
         this.lock.lock();
@@ -157,6 +191,11 @@ public class DepartureAirport implements DepartureAirportPilot, DepartureAirport
         return -1;
     }
 
+    /**
+     * This method is used to pilot park at transfer gate.
+     * 
+     * @return true if need to wait otherwise false
+     */
     @Override
     public boolean parkAtTransferGate() {
         this.lock.lock();

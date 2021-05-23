@@ -1,31 +1,37 @@
 package communication;
 
-import repository.Repository;
+import repository.SharedRegionInt;
 
+/**
+ * Server Proxy Agent
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ * @see Runnable
+ */
 public class ServerProxyAgent implements Runnable {
 
     private CommunicationChannel channel;
-    private Repository repository;
+    private SharedRegionInt sharedRegionInt;
 
-    public ServerProxyAgent(CommunicationChannel communicationChannel, Repository repository) {
+    /**
+     * Creates an Server Proxy Agent.
+     * 
+     * @param communicationChannel The Communication Channel.
+     * @param sharedRegionInt      The Shared Region Interface.
+     */
+    public ServerProxyAgent(CommunicationChannel communicationChannel, SharedRegionInt sharedRegionInt) {
         this.channel = communicationChannel;
-        this.repository = repository;
+        this.sharedRegionInt = sharedRegionInt;
     }
 
+    /**
+     * This method is used when the thread starts.
+     */
     @Override
     public void run() {
-        Message message = this.channel.readObject();
-
-        Message messageOut = new Message();
-        if (message.getMethod().equals("updateHostessState")) {
-            this.repository.updateHostessState(message.getHostessState());
-        } else if (message.getMethod().equals("updatePilotState")) {
-            this.repository.updatePilotState(message.getPilotState());
-        } else if (message.getMethod().equals("updatePassengerState")) {
-            this.repository.updatePassengerState(message.getPassengerState(), message.getId());
-        } else if (message.getMethod().equals("updatePassengerInCheck")) {
-            this.repository.updatePassengerInCheck(message.getId());
-        }
+        Message messageIn = this.channel.readObject();
+        Message messageOut = sharedRegionInt.processAndReply(messageIn);
         this.channel.writeObject(messageOut);
         this.channel.close();
     }

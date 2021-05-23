@@ -9,6 +9,12 @@ import entity.PassengerState;
 import entity.PilotState;
 import logger.AirliftLogger;
 
+/**
+ * Repository
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class Repository implements RepositoryInt {
 
     private ReentrantLock lock = new ReentrantLock(true);
@@ -23,6 +29,11 @@ public class Repository implements RepositoryInt {
     private HostessState hostessState;
     private PassengerState[] passengersState;
 
+    /**
+     * Creates an Repository.
+     * 
+     * @param totalPassengers The total of passangers.
+     */
     public Repository(int totalPassengers) {
         // Global
         this.totalPassengers = totalPassengers;
@@ -48,6 +59,11 @@ public class Repository implements RepositoryInt {
         this.callStateLog();
     }
 
+    /**
+     * This method is used to update the Hostess State.
+     * 
+     * @param hostessState The Hostess State.
+     */
     public void updateHostessState(HostessState hostessState) {
         this.lock.lock();
         try {
@@ -73,6 +89,11 @@ public class Repository implements RepositoryInt {
 
     }
 
+    /**
+     * This method is used to update the Pilot State.
+     * 
+     * @param pilotState The Pilot State.
+     */
     public void updatePilotState(PilotState pilotState) {
         this.lock.lock();
         try {
@@ -104,6 +125,12 @@ public class Repository implements RepositoryInt {
         }
     }
 
+    /**
+     * This method is used to update the Passenger State.
+     * 
+     * @param passengerState The Passenger State.
+     * @param passengerId    The Passenger Id.
+     */
     public void updatePassengerState(PassengerState passengerState, int passengerId) {
         this.lock.lock();
         try {
@@ -125,10 +152,18 @@ public class Repository implements RepositoryInt {
         }
     }
 
+    /**
+     * This method is used to update the Id of Passenger in Check.
+     * 
+     * @param passengerInCheck The Passenger ID.
+     */
     public void updatePassengerInCheck(int passengerInCheck) {
         this.passengerInCheck = passengerInCheck;
     }
 
+    /**
+     * This method is used to call the logger.
+     */
     private void callStateLog() {
         this.logger.stateLog(this.pilotState, this.hostessState, this.passengersState, this.numberPassengersInQueue,
                 this.numberPassengersInPlane, this.numberPassengersInDestination);

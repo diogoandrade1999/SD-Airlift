@@ -3,6 +3,12 @@ package departureairport;
 import communication.CommunicationChannel;
 import communication.Message;
 
+/**
+ * Departure Airport Hostess Stub
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ */
 public class DepartureAirportHostessStub implements DepartureAirportHostess {
 
     private String host;
@@ -10,11 +16,22 @@ public class DepartureAirportHostessStub implements DepartureAirportHostess {
     private CommunicationChannel channel;
     private Message message;
 
+    /**
+     * Creates an Departure Airport Hostesss Stub.
+     * 
+     * @param host The departure airport host.
+     * @param port The departure airport port.
+     */
     public DepartureAirportHostessStub(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     * This method is used to hostess wait for next passenger.
+     * 
+     * @return true if need to wait otherwise false
+     */
     @Override
     public boolean waitForNextPassenger() {
         this.message = new Message();
@@ -28,6 +45,11 @@ public class DepartureAirportHostessStub implements DepartureAirportHostess {
         return messageOut.getWait();
     }
 
+    /**
+     * This method is used to hostess check documents.
+     * 
+     * @return The passenger id;
+     */
     @Override
     public int checkDocuments() {
         this.message = new Message();

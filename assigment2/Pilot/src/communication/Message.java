@@ -6,6 +6,13 @@ import entity.HostessState;
 import entity.PassengerState;
 import entity.PilotState;
 
+/**
+ * Message
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ * @see Serializable
+ */
 public class Message implements Serializable {
 
     private String msg;

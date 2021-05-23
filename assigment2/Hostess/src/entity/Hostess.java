@@ -3,16 +3,32 @@ package entity;
 import departureairport.DepartureAirportHostess;
 import plane.PlaneHostess;
 
+/**
+ * Hostess
+ *
+ * @author Diogo Andrade 89265
+ * @author Rodrigo Oliveira 90514
+ * @see Runnable
+ */
 public class Hostess implements Runnable {
 
     private DepartureAirportHostess departureAirport;
     private PlaneHostess plane;
 
+    /**
+     * Creates an Hostess.
+     * 
+     * @param departureAirport The departure airport.
+     * @param plane            The plane.
+     */
     public Hostess(DepartureAirportHostess departureAirport, PlaneHostess plane) {
         this.departureAirport = departureAirport;
         this.plane = plane;
     }
 
+    /**
+     * This method is used when the thread starts.
+     */
     @Override
     public void run() {
         while (true) {
