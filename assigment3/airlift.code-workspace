@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "./Register"
+		},
+		{
+			"path": "./DepartureAirport"
+		},
+		{
+			"path": "./DestinationAirport"
+		},
+		{
+			"path": "./Plane"
+		},
+		{
+			"path": "./Repository"
+		},
+		{
+			"path": "./Pilot"
+		},
+		{
+			"path": "./Hostess"
+		},
+		{
+			"path": "./Passenger"
+		}
+	],
+	"settings": {}
+}
