@@ -55,7 +55,7 @@ public class Main {
         Repository repository = new Repository(TOTAL_PASSENGERS);
         RepositoryInt repositoryStub = null;
         try {
-            repositoryStub = (Repository) UnicastRemoteObject.exportObject(repository, this.port);
+            repositoryStub = (RepositoryInt) UnicastRemoteObject.exportObject(repository, this.port);
         } catch (RemoteException e) {
             System.out.println("Repository stub generation exception: " + e.getMessage());
             e.printStackTrace();

@@ -8,7 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import destinationairport.DestinationAirport;
-import destinationairport.DestinationAirportPassenger;
+import destinationairport.DestinationAirportInt;
 import register.Register;
 import repository.RepositoryInt;
 
@@ -79,10 +79,10 @@ public class Main {
 
         // Service
         DestinationAirport destinationAirport = new DestinationAirport(repository);
-        DestinationAirportPassenger destinationAirportPassenger = null;
+        DestinationAirportInt destinationAirportStub = null;
         try {
-            destinationAirportPassenger = (DestinationAirportPassenger) UnicastRemoteObject
-                    .exportObject(destinationAirport, this.port);
+            destinationAirportStub = (DestinationAirportInt) UnicastRemoteObject.exportObject(destinationAirport,
+                    this.port);
         } catch (RemoteException e) {
             System.out.println("Destination Airport stub generation exception: " + e.getMessage());
             e.printStackTrace();
@@ -105,7 +105,7 @@ public class Main {
         }
 
         try {
-            register.bind("DestinationAirportPassenger", destinationAirportPassenger);
+            register.bind("DestinationAirport", destinationAirportStub);
         } catch (RemoteException e) {
             System.out.println("Destination Airport registration exception: " + e.getMessage());
             e.printStackTrace();

@@ -8,9 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import departureairport.DepartureAirport;
-import departureairport.DepartureAirportHostess;
-import departureairport.DepartureAirportPassenger;
-import departureairport.DepartureAirportPilot;
+import departureairport.DepartureAirportInt;
 import register.Register;
 import repository.RepositoryInt;
 
@@ -85,16 +83,9 @@ public class Main {
         // Service
         DepartureAirport departureAirport = new DepartureAirport(repository, TOTAL_PASSENGERS, NUMBER_MAX_PASSENGERS,
                 NUMBER_MIN_PASSENGERS);
-        DepartureAirportPilot departureAirportPilot = null;
-        DepartureAirportHostess departureAirportHostess = null;
-        DepartureAirportPassenger departureAirportPassenger = null;
+        DepartureAirportInt departureAirportStub = null;
         try {
-            departureAirportPilot = (DepartureAirportPilot) UnicastRemoteObject.exportObject(departureAirport,
-                    this.port);
-            departureAirportHostess = (DepartureAirportHostess) UnicastRemoteObject.exportObject(departureAirport,
-                    this.port);
-            departureAirportPassenger = (DepartureAirportPassenger) UnicastRemoteObject.exportObject(departureAirport,
-                    this.port);
+            departureAirportStub = (DepartureAirportInt) UnicastRemoteObject.exportObject(departureAirport, this.port);
         } catch (RemoteException e) {
             System.out.println("Departure Airport stub generation exception: " + e.getMessage());
             e.printStackTrace();
@@ -117,9 +108,7 @@ public class Main {
         }
 
         try {
-            register.bind("DepartureAirportPilot", departureAirportPilot);
-            register.bind("DepartureAirportHostess", departureAirportHostess);
-            register.bind("DepartureAirportPassenger", departureAirportPassenger);
+            register.bind("DepartureAirport", departureAirportStub);
         } catch (RemoteException e) {
             System.out.println("Departure Airport registration exception: " + e.getMessage());
             e.printStackTrace();

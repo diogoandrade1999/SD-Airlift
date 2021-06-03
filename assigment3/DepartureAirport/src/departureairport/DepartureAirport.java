@@ -17,7 +17,7 @@ import repository.RepositoryInt;
  * @author Diogo Andrade 89265
  * @author Rodrigo Oliveira 90514
  */
-public class DepartureAirport implements DepartureAirportPilot, DepartureAirportHostess, DepartureAirportPassenger {
+public class DepartureAirport implements DepartureAirportInt {
 
     private RepositoryInt repository;
     private ReentrantLock lock = new ReentrantLock(true);

@@ -17,7 +17,7 @@ import repository.RepositoryInt;
  * @author Diogo Andrade 89265
  * @author Rodrigo Oliveira 90514
  */
-public class Plane implements PlanePilot, PlaneHostess, PlanePassenger {
+public class Plane implements PlaneInt {
 
     private RepositoryInt repository;
     private final ReentrantLock lock = new ReentrantLock(true);

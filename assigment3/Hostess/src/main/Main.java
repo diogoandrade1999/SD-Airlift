@@ -6,8 +6,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import departureairport.DepartureAirportHostess;
+import departureairport.DepartureAirportInt;
 import entity.Hostess;
 import plane.PlaneHostess;
+import plane.PlaneInt;
 
 /**
  * Main Hostess
@@ -54,8 +56,8 @@ public class Main {
         DepartureAirportHostess departureAirport = null;
         PlaneHostess plane = null;
         try {
-            departureAirport = (DepartureAirportHostess) registry.lookup("DepartureAirportHostess");
-            plane = (PlaneHostess) registry.lookup("PlaneHostess");
+            departureAirport = (DepartureAirportInt) registry.lookup("DepartureAirport");
+            plane = (PlaneInt) registry.lookup("Plane");
         } catch (RemoteException e) {
             System.err.println("Hostess look up exception: " + e.getMessage());
             e.printStackTrace();

@@ -8,9 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import plane.Plane;
-import plane.PlaneHostess;
-import plane.PlanePassenger;
-import plane.PlanePilot;
+import plane.PlaneInt;
 import register.Register;
 import repository.RepositoryInt;
 
@@ -82,13 +80,9 @@ public class Main {
 
         // Service
         Plane plane = new Plane(repository, TOTAL_PASSENGERS);
-        PlanePilot planePilot = null;
-        PlaneHostess planeHostess = null;
-        PlanePassenger planePassenger = null;
+        PlaneInt planeStub = null;
         try {
-            planePilot = (PlanePilot) UnicastRemoteObject.exportObject(plane, this.port);
-            planeHostess = (PlaneHostess) UnicastRemoteObject.exportObject(plane, this.port);
-            planePassenger = (PlanePassenger) UnicastRemoteObject.exportObject(plane, this.port);
+            planeStub = (PlaneInt) UnicastRemoteObject.exportObject(plane, this.port);
         } catch (RemoteException e) {
             System.out.println("Plane stub generation exception: " + e.getMessage());
             e.printStackTrace();
@@ -111,9 +105,7 @@ public class Main {
         }
 
         try {
-            register.bind("PlanePilot", planePilot);
-            register.bind("PlaneHostess", planeHostess);
-            register.bind("PlanePassenger", planePassenger);
+            register.bind("Plane", planeStub);
         } catch (RemoteException e) {
             System.out.println("Plane registration exception: " + e.getMessage());
             e.printStackTrace();

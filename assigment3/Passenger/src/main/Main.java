@@ -5,9 +5,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import departureairport.DepartureAirportInt;
 import departureairport.DepartureAirportPassenger;
+import destinationairport.DestinationAirportInt;
 import destinationairport.DestinationAirportPassenger;
 import entity.Passenger;
+import plane.PlaneInt;
 import plane.PlanePassenger;
 
 /**
@@ -57,9 +60,9 @@ public class Main {
         DestinationAirportPassenger destinationAirport = null;
         PlanePassenger plane = null;
         try {
-            departureAirport = (DepartureAirportPassenger) registry.lookup("DepartureAirportPassenger");
-            destinationAirport = (DestinationAirportPassenger) registry.lookup("DestinationAirportPassenger");
-            plane = (PlanePassenger) registry.lookup("PlanePassenger");
+            departureAirport = (DepartureAirportInt) registry.lookup("DepartureAirport");
+            destinationAirport = (DestinationAirportInt) registry.lookup("DestinationAirport");
+            plane = (PlaneInt) registry.lookup("Plane");
         } catch (RemoteException e) {
             System.err.println("Passenger look up exception: " + e.getMessage());
             e.printStackTrace();
