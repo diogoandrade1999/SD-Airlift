@@ -8,7 +8,7 @@ ports=(22210 22211 22212 22213 22214 22215 22216 22217 22218 22219)
 machine_number=()
 
 proccess_command_line() {
-    if [[ $number_args -ne 7 ]]; then
+    if [[ $number_args -ne 8 ]]; then
         echo "Error: Number of Args is Wrong!"
         exit 1
     fi
@@ -62,32 +62,46 @@ send_code() {
 
     printf "\nSend Passengers!\n"
     echo "put -r ./Passenger" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[6]}${host}
+
+    printf "\nSend Register!\n"
+    echo "put -r ./Register" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[7]}${host}
 }
 
 start() {
-    printf "\nStart DepartureAirport!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[0]}${host} " cd ./DepartureAirport && bash ./run.sh ${machine}${machine_number[0]}${host} ${machine}${machine_number[3]}${host} ${ports[0]} ${ports[3]} & " &
+    printf "\nStart Register!\n"
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[7]}${host}' "cd Register/src; echo Registry; rmiregistry -J-Djava.rmi.server.codebase="http://localhost/sd202/Register/src" -J-Djava.rmi.server.useCodebaseOnly=true '${ports[4]}'; sleep 50; pkill -f rmiregistry"; bash' &
 
-    printf "\nStart DestinationAirport!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[1]}${host} " cd ./DestinationAirport && bash ./run.sh ${machine}${machine_number[1]}${host} ${machine}${machine_number[3]}${host} ${ports[1]} ${ports[3]} & " &
+    sleep 3;
 
-    printf "\nStart Plane!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[2]}${host} " cd ./Plane && bash ./run.sh ${machine}${machine_number[2]}${host} ${machine}${machine_number[3]}${host} ${ports[2]} ${ports[3]} & " &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[7]}${host}' "cd Register; bash ./run.sh '${ports[5]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
+
+    sleep 3;
 
     printf "\nStart Repository!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[3]}${host} " cd ./Repository && bash ./run.sh ${machine}${machine_number[3]}${host} ${ports[3]} & " &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[3]}${host}' "cd Repository; bash ./run.sh '${ports[3]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
+
+    sleep 3;
+
+    printf "\nStart DepartureAirport!\n"
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[0]}${host}' "cd DepartureAirport; bash ./run.sh '${ports[0]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
+
+    printf "\nStart DestinationAirport!\n"
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[1]}${host}' "cd DestinationAirport; bash ./run.sh '${ports[1]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
+
+    printf "\nStart Plane!\n"
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[2]}${host}' "cd Plane; bash ./run.sh '${ports[2]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
     # give some time to servers start
     sleep 5
 
     printf "\nStart Pilot!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[4]}${host} " cd ./Pilot && bash ./run.sh ${machine}${machine_number[0]}${host} ${machine}${machine_number[2]}${host} ${ports[0]} ${ports[2]} & " &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[4]}${host}' "cd Pilot; echo Pilot; bash ./run.sh '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
     printf "\nStart Hostess!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[5]}${host} " cd ./Hostess && bash ./run.sh ${machine}${machine_number[0]}${host} ${machine}${machine_number[2]}${host} ${ports[0]} ${ports[2]} & " &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[5]}${host}' "cd Hostess; echo Hostess; bash ./run.sh '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
     printf "\nStart Passengers!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[6]}${host} " cd ./Passenger && bash ./run.sh ${machine}${machine_number[0]}${host} ${machine}${machine_number[1]}${host} ${machine}${machine_number[2]}${host} ${ports[0]} ${ports[1]} ${ports[2]} & " &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[6]}${host}' "cd Passenger; echo Passengers; bash ./run.sh '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 }
 
 get_result() {
@@ -96,9 +110,6 @@ get_result() {
 
     printf "\nGet Logging File!\n"
     sshpass -p $pass ssh ${user}"@"${machine}${machine_number[3]}${host} " cat ./Repository/logging.log "
-
-    printf "\nWait for the servers stop!\n"
-    sleep 15
 }
 
 number_args=$#
