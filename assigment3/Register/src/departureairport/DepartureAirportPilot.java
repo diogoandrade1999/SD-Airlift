@@ -19,4 +19,10 @@ public interface DepartureAirportPilot extends Remote {
      */
     boolean parkAtTransferGate() throws RemoteException;
 
+    /**
+     * This method is used to shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    void shutdown() throws RemoteException;
 }

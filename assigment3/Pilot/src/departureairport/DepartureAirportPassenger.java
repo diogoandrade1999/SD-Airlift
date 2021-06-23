@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  * @author Rodrigo Oliveira 90514
  * @see Remote
  */
-public interface DepartureAirportPassenger extends Remote{
+public interface DepartureAirportPassenger extends Remote {
     /**
      * This method is used to passenger wait in queue.
      * 

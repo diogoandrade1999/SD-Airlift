@@ -1,6 +1,7 @@
 package main;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -26,6 +27,7 @@ public class Main {
     private int port;
     private String registryHost;
     private int registryPort;
+    private static boolean end = false;
 
     /**
      * Creates an Main Departure Airport. And starts the simulation.
@@ -48,6 +50,7 @@ public class Main {
      * @throws RemoteException
      * @throws NotBoundException
      * @throws AlreadyBoundException
+     * @throws NoSuchObjectException
      */
     private void initSimulation() {
         // create and install the security manager
@@ -71,11 +74,11 @@ public class Main {
         try {
             repository = (RepositoryInt) registry.lookup("Repository");
         } catch (RemoteException e) {
-            System.err.println("Pilot look up exception: " + e.getMessage());
+            System.err.println("Departure Airport look up exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         } catch (NotBoundException e) {
-            System.err.println("Pilot not bound exception: " + e.getMessage());
+            System.err.println("Departure Airport not bound exception: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }
@@ -119,6 +122,67 @@ public class Main {
             System.exit(1);
         }
         System.out.println("Departure Airport object was registered!");
+
+        // wait for the end of operations
+        System.out.println("Departure Airport is in operation!");
+        try {
+            while (!end)
+                synchronized (Class.forName("main.Main")) {
+                    try {
+                        (Class.forName("main.Main")).wait();
+                    } catch (InterruptedException e) {
+                        System.out.println("Departure Airport main thread was interrupted!");
+                    }
+                }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type Departure Airport was not found (blocking)!");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // server shutdown
+        boolean shutdownDone = false;
+        try {
+            register.unbind("DepartureAirport");
+        } catch (RemoteException e) {
+            System.out.println("Departure Airport deregistration exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        } catch (NotBoundException e) {
+            System.out.println("Departure Airport not bound exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+        System.out.println("Departure Airport was deregistered!");
+
+        try {
+            shutdownDone = UnicastRemoteObject.unexportObject(departureAirport, true);
+        } catch (NoSuchObjectException e) {
+            System.out.println("Departure Airport unexport exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        if (shutdownDone)
+            System.out.println("Departure Airport was shutdown!");
+    }
+
+    /**
+     * Shutdown the simulation.
+     * 
+     * @throws ClassNotFoundException
+     */
+    public static void shutdown() {
+        end = true;
+        try {
+            synchronized (Class.forName("main.Main")) {
+                (Class.forName("main.Main")).notify();
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type Departure Airport was not found (waking up)!");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**

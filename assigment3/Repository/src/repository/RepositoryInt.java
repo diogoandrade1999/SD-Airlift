@@ -49,4 +49,10 @@ public interface RepositoryInt extends Remote {
      */
     void updatePassengerInCheck(int passengerInCheck) throws RemoteException;
 
+    /**
+     * This method is used to shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    void shutdown() throws RemoteException;
 }

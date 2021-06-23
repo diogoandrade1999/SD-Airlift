@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.Random;
 
 import departureairport.DepartureAirportPilot;
+import destinationairport.DestinationAirportPilot;
 import plane.PlanePilot;
 
 /**
@@ -16,6 +17,7 @@ import plane.PlanePilot;
 public class Pilot implements Runnable {
 
     private DepartureAirportPilot departureAirport;
+    private DestinationAirportPilot destinationAirport;
     private PlanePilot plane;
 
     /**
@@ -24,8 +26,9 @@ public class Pilot implements Runnable {
      * @param departureAirport The departure airport.
      * @param plane            The plane.
      */
-    public Pilot(DepartureAirportPilot departureAirport, PlanePilot plane) {
+    public Pilot(DepartureAirportPilot departureAirport, DestinationAirportPilot destinationAirport, PlanePilot plane) {
         this.departureAirport = departureAirport;
+        this.destinationAirport = destinationAirport;
         this.plane = plane;
     }
 
@@ -68,6 +71,11 @@ public class Pilot implements Runnable {
                     e.printStackTrace();
                 }
             }
+
+            // shutdown servers
+            this.departureAirport.shutdown();
+            this.destinationAirport.shutdown();
+            this.plane.shutdown();
         } catch (RemoteException e) {
             e.printStackTrace();
         }

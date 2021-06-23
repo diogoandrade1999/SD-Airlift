@@ -1,6 +1,7 @@
 package main;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -23,6 +24,7 @@ public class Main {
     private int port;
     private String registryHost;
     private int registryPort;
+    private static boolean end = false;
 
     /**
      * Creates an Main Repository. And starts the simulation.
@@ -44,6 +46,7 @@ public class Main {
      * @throws RemoteException
      * @throws NotBoundException
      * @throws AlreadyBoundException
+     * @throws NoSuchObjectException
      */
     private void initSimulation() {
         // create and install the security manager
@@ -100,6 +103,67 @@ public class Main {
             System.exit(1);
         }
         System.out.println("Repository object was registered!");
+
+        // wait for the end of operations
+        System.out.println("Repository is in operation!");
+        try {
+            while (!end)
+                synchronized (Class.forName("main.Main")) {
+                    try {
+                        (Class.forName("main.Main")).wait();
+                    } catch (InterruptedException e) {
+                        System.out.println("Repository main thread was interrupted!");
+                    }
+                }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type Repository was not found (blocking)!");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // server shutdown
+        boolean shutdownDone = false;
+        try {
+            register.unbind("Repository");
+        } catch (RemoteException e) {
+            System.out.println("Repository deregistration exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        } catch (NotBoundException e) {
+            System.out.println("Repository not bound exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+        System.out.println("Repository was deregistered!");
+
+        try {
+            shutdownDone = UnicastRemoteObject.unexportObject(repository, true);
+        } catch (NoSuchObjectException e) {
+            System.out.println("Repository unexport exception: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        if (shutdownDone)
+            System.out.println("Repository was shutdown!");
+    }
+
+    /**
+     * Shutdown the simulation.
+     * 
+     * @throws ClassNotFoundException
+     */
+    public static void shutdown() {
+        end = true;
+        try {
+            synchronized (Class.forName("main.Main")) {
+                (Class.forName("main.Main")).notify();
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("The data type Departure Airport was not found (waking up)!");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**

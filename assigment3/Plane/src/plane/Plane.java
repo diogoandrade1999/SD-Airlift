@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import entity.HostessState;
 import entity.PassengerState;
 import entity.PilotState;
+import main.Main;
 import repository.RepositoryInt;
 
 /**
@@ -253,6 +254,22 @@ public class Plane implements PlaneInt {
         try {
             // wake up pilot
             this.pilotWaitForDeboarding.signal();
+        } finally {
+            this.lock.unlock();
+        }
+    }
+
+    /**
+     * This method is used to shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    @Override
+    public void shutdown() throws RemoteException {
+        this.lock.lock();
+        try {
+            this.repository.shutdown();
+            Main.shutdown();
         } finally {
             this.lock.unlock();
         }

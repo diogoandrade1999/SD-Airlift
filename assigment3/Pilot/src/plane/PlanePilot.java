@@ -31,4 +31,11 @@ public interface PlanePilot extends Remote {
      * @throws RemoteException
      */
     void announceArrival() throws RemoteException;
+
+    /**
+     * This method is used to pilot shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    void shutdown() throws RemoteException;
 }

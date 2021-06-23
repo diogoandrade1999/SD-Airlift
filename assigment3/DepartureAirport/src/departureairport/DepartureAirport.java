@@ -10,6 +10,7 @@ import entity.PilotState;
 import entity.HostessState;
 import entity.PassengerState;
 import repository.RepositoryInt;
+import main.Main;
 
 /**
  * Departure Airport
@@ -221,5 +222,20 @@ public class DepartureAirport implements DepartureAirportInt {
             this.lock.unlock();
         }
         return false;
+    }
+
+    /**
+     * This method is used to pilot shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    @Override
+    public void shutdown() throws RemoteException {
+        this.lock.lock();
+        try {
+            Main.shutdown();
+        } finally {
+            this.lock.unlock();
+        }
     }
 }

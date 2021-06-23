@@ -13,19 +13,29 @@ import java.rmi.RemoteException;
 public interface PlanePilot extends Remote {
     /**
      * This method is used to inform that the plane is ready for boarding.
+     * 
      * @throws RemoteException
      */
     void informPlaneReadyForBoarding() throws RemoteException;
 
     /**
      * This method is used to pilot wait for all in board.
+     * 
      * @throws RemoteException
      */
     void waitForAllInBoard() throws RemoteException;
 
     /**
      * This method is used to announce arrival.
+     * 
      * @throws RemoteException
      */
     void announceArrival() throws RemoteException;
+
+    /**
+     * This method is used to shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    void shutdown() throws RemoteException;
 }

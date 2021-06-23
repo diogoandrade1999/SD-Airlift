@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 
 import entity.PassengerState;
+import main.Main;
 import repository.RepositoryInt;
 
 /**
@@ -46,6 +47,21 @@ public class DestinationAirport implements DestinationAirportInt {
             this.passengers.add(passengerId);
         } catch (RemoteException e) {
             e.printStackTrace();
+        } finally {
+            this.lock.unlock();
+        }
+    }
+
+    /**
+     * This method is used to pilot shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    @Override
+    public void shutdown() throws RemoteException {
+        this.lock.lock();
+        try {
+            Main.shutdown();
         } finally {
             this.lock.unlock();
         }

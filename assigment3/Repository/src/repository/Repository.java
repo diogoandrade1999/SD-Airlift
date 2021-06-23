@@ -1,5 +1,6 @@
 package repository;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,6 +9,7 @@ import entity.HostessState;
 import entity.PassengerState;
 import entity.PilotState;
 import logger.AirliftLogger;
+import main.Main;
 
 /**
  * Repository
@@ -167,6 +169,21 @@ public class Repository implements RepositoryInt {
     private void callStateLog() {
         this.logger.stateLog(this.pilotState, this.hostessState, this.passengersState, this.numberPassengersInQueue,
                 this.numberPassengersInPlane, this.numberPassengersInDestination);
+    }
+
+    /**
+     * This method is used to shutdown servers.
+     * 
+     * @throws RemoteException
+     */
+    @Override
+    public void shutdown() throws RemoteException {
+        this.lock.lock();
+        try {
+            Main.shutdown();
+        } finally {
+            this.lock.unlock();
+        }
     }
 
 }

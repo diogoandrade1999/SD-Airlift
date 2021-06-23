@@ -69,18 +69,18 @@ send_code() {
 
 start() {
     printf "\nStart Register!\n"
-    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[7]}${host}' "cd Register/src; echo Registry; rmiregistry -J-Djava.rmi.server.codebase="http://localhost/sd202/Register/src" -J-Djava.rmi.server.useCodebaseOnly=true '${ports[4]}'; sleep 50; pkill -f rmiregistry"; bash' &
+    gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[7]}${host}' "cd Register/src; echo Registry; rmiregistry -J-Djava.rmi.server.codebase="http://localhost/sd202/Register/src" -J-Djava.rmi.server.useCodebaseOnly=true '${ports[4]}'"; bash' &
 
-    sleep 3;
+    sleep 5;
 
     gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[7]}${host}' "cd Register; bash ./run.sh '${ports[5]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
-    sleep 3;
+    sleep 10;
 
     printf "\nStart Repository!\n"
     gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[3]}${host}' "cd Repository; bash ./run.sh '${ports[3]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
-    sleep 3;
+    sleep 5;
 
     printf "\nStart DepartureAirport!\n"
     gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[0]}${host}' "cd DepartureAirport; bash ./run.sh '${ports[0]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
@@ -109,7 +109,23 @@ get_result() {
     sleep 35
 
     printf "\nGet Logging File!\n"
-    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[3]}${host} " cat ./Repository/logging.log "
+    echo "get Repository/logging.log" | sshpass -p $pass sftp ${user}"@"${machine}${machine_number[3]}${host}
+
+    cat ./logging.log
+}
+
+force_shutdown() {
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[0]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[1]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[2]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[3]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[4]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[5]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[6]}${host} "pkill -f main.Main" >/dev/null 2>&1
+
+    printf "\nShutdown Registry!\n"
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[7]}${host} "pkill -f main.Main" >/dev/null 2>&1
+    sshpass -p $pass ssh ${user}"@"${machine}${machine_number[7]}${host} "pkill -f rmiregistry" >/dev/null 2>&1
 }
 
 number_args=$#
@@ -119,3 +135,4 @@ proccess_command_line
 send_code
 start
 get_result
+force_shutdown
