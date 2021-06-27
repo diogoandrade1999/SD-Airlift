@@ -1,5 +1,7 @@
 #!bin/bash
 
+# execution example: bash ./run.sh 9 2 3 4 5 6 7 8
+
 machine="l040101-ws"
 host=".ua.pt"
 user="sd202"
@@ -92,7 +94,7 @@ start() {
     gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[2]}${host}' "cd Plane; bash ./run.sh '${ports[2]}' '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
 
     # give some time to servers start
-    sleep 5
+    sleep 10
 
     printf "\nStart Pilot!\n"
     gnome-terminal -- /bin/sh -c 'sshpass -p '$pass' ssh '${user}'"@"'${machine}${machine_number[4]}${host}' "cd Pilot; echo Pilot; bash ./run.sh '${machine}${machine_number[7]}${host}' '${ports[4]}'"; bash' &
